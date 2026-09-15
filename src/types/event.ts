@@ -1,10 +1,12 @@
 export interface Team {
   id: string;
-  code: string;
   name: string;
-  nameAr: string;
-  tagline: string;
-  monogram: string;
+  photo?: string | null;
+  // Kept for UI backwards compatibility (optional)
+  code?: string;
+  nameAr?: string;
+  tagline?: string;
+  monogram?: string;
 }
 
 export interface AudienceVote {

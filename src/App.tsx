@@ -23,10 +23,12 @@ const RANK_WORD = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th'];
 type Step = 'intro' | 'evaluate' | 'review' | 'done';
 
 export default function App() {
-  const { teams, settings, castJudgeVote } = useEvent();
+  const { teams, settings, castJudgeVote, hasVoted } = useEvent();
   const toast = useToast();
-  const [judgeName, setJudgeName] = useState('');
-  const [step, setStep] = useState<Step>('intro');
+  const [judgeName, setJudgeName] = useState(() => {
+    return typeof localStorage !== 'undefined' ? localStorage.getItem('judge_name') || '' : '';
+  });
+  const [step, setStep] = useState<Step>(hasVoted ? 'done' : 'intro');
   const [picks, setPicks] = useState<string[]>([]);
   const [sending, setSending] = useState(false);
 
@@ -55,6 +57,9 @@ export default function App() {
     setSending(true);
     window.setTimeout(() => {
       castJudgeVote(judgeName, picks);
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('judge_name', judgeName);
+      }
       setSending(false);
       setStep('done');
       toast('Evaluation submitted', 'ok');
