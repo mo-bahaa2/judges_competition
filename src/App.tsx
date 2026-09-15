@@ -17,13 +17,14 @@ import { StatusBadge } from './components/ui/Status';
 import { Input } from './components/ui/Field';
 import { TeamMark } from './components/ui/TeamMark';
 import { useToast } from './components/ui/Toast';
+import { VotingClosed, VotingNotOpen } from './components/judges/JudgeStates';
 
 const RANK_WORD = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th'];
 
 type Step = 'intro' | 'evaluate' | 'review' | 'done';
 
 export default function App() {
-  const { teams, settings, castJudgeVote, hasVoted } = useEvent();
+  const { teams, settings, state, castJudgeVote, hasVoted } = useEvent();
   const toast = useToast();
   const [judgeName, setJudgeName] = useState(() => {
     return typeof localStorage !== 'undefined' ? localStorage.getItem('judge_name') || '' : '';
@@ -32,7 +33,7 @@ export default function App() {
   const [picks, setPicks] = useState<string[]>([]);
   const [sending, setSending] = useState(false);
 
-  // Removed static judge check
+  const live = state === 'voting_live' || state === 'ending_soon';
 
   const rankOf = (id: string) => {
     const i = picks.indexOf(id);
@@ -66,18 +67,43 @@ export default function App() {
     }, 700);
   };
 
-  return (
-    <TechScreen>
-      <header className="sticky top-0 z-30 border-b border-line bg-ink-950/95 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-5 py-3.5">
-          <LogoLockup size={34} subtitle="Judges Panel" />
-          <StatusBadge tone="ok">
-            {judgeName ? judgeName.split(' ')[0] : 'Ready'}
-          </StatusBadge>
-        </div>
-      </header>
+  let body: React.ReactNode = null;
 
-      {step === 'intro' && (
+  if (step === 'done' || hasVoted) {
+    body = (
+        <div className="mx-auto flex max-w-md flex-col items-center px-5 py-16 text-center">
+          <motion.span
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.28, ease: [0.23, 1, 0.32, 1] }}
+            className="grid h-24 w-24 place-items-center rounded-lg border border-brand-shade bg-brand text-ink-950">
+            <CheckIcon className="h-12 w-12" strokeWidth={3} />
+          </motion.span>
+          <h1 className="mt-7 text-4xl font-extrabold leading-tight">
+            Evaluation Submitted
+          </h1>
+          <p className="mt-2 text-base font-medium text-fg-muted">
+            {judgeName}, your rankings are locked and sent to the control room.
+          </p>
+          
+          <div className="mt-8 w-full rounded-lg border border-line bg-ink-900 p-5">
+            <div className="flex items-center gap-2">
+              <ShieldCheckIcon className="h-4 w-4 text-brand" strokeWidth={2} />
+              <TechLabel>Cannot be edited after submission</TechLabel>
+            </div>
+          </div>
+          <div className="mt-8">
+            <LogoMark size={40} />
+          </div>
+        </div>
+    );
+  } else if (state === 'not_started' || state === 'starting_soon') {
+    body = <VotingNotOpen starting={state === 'starting_soon'} />;
+  } else if (!live) {
+    body = <VotingClosed headline={settings.postVotingHeadline} body={settings.postVotingBody} venue={settings.venue} sponsors={settings.sponsors} />;
+  } else {
+    if (step === 'intro') {
+      body = (
         <div className="mx-auto max-w-2xl px-5 py-14">
           <div className="flex flex-col items-center text-center">
             <span className="grid h-20 w-20 place-items-center rounded-lg border border-line-strong bg-ink-900">
@@ -139,9 +165,9 @@ export default function App() {
             Begin Evaluation
           </Button>
         </div>
-      )}
-
-      {step === 'evaluate' && (
+      );
+    } else if (step === 'evaluate') {
+      body = (
         <div className="mx-auto max-w-4xl px-5 pb-44 pt-7">
           <div className="mt-2">
             <TechLabel>Step 01 / 02 · Rank all teams</TechLabel>
@@ -211,9 +237,9 @@ export default function App() {
             </div>
           </div>
         </div>
-      )}
-
-      {step === 'review' && (
+      );
+    } else if (step === 'review') {
+      body = (
         <div className="mx-auto max-w-2xl px-5 pb-40 pt-8">
           <button
             onClick={() => setStep('evaluate')}
@@ -270,35 +296,22 @@ export default function App() {
             </div>
           </div>
         </div>
-      )}
+      );
+    }
+  }
 
-      {step === 'done' && (
-        <div className="mx-auto flex max-w-md flex-col items-center px-5 py-16 text-center">
-          <motion.span
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.28, ease: [0.23, 1, 0.32, 1] }}
-            className="grid h-24 w-24 place-items-center rounded-lg border border-brand-shade bg-brand text-ink-950">
-            <CheckIcon className="h-12 w-12" strokeWidth={3} />
-          </motion.span>
-          <h1 className="mt-7 text-4xl font-extrabold leading-tight">
-            Evaluation Submitted
-          </h1>
-          <p className="mt-2 text-base font-medium text-fg-muted">
-            {judgeName}, your rankings are locked and sent to the control room.
-          </p>
-          
-          <div className="mt-8 w-full rounded-lg border border-line bg-ink-900 p-5">
-            <div className="flex items-center gap-2">
-              <ShieldCheckIcon className="h-4 w-4 text-brand" strokeWidth={2} />
-              <TechLabel>Cannot be edited after submission</TechLabel>
-            </div>
-          </div>
-          <div className="mt-8">
-            <LogoMark size={40} />
-          </div>
+  return (
+    <TechScreen>
+      <header className="sticky top-0 z-30 border-b border-line bg-ink-950/95 backdrop-blur">
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-5 py-3.5">
+          <LogoLockup size={34} subtitle="Judges Panel" />
+          <StatusBadge tone={live ? "ok" : "idle"}>
+            {judgeName ? judgeName.split(' ')[0] : 'Ready'}
+          </StatusBadge>
         </div>
-      )}
+      </header>
+
+      {body}
     </TechScreen>
   );
 }
