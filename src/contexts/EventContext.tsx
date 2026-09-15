@@ -75,7 +75,7 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
   const [settings, setSettings] = useState<EventSettings>(DEFAULT_SETTINGS);
   const [teams, setTeams] = useState<Team[]>([]);
   const [state, setState] = useState<EventState>('not_started');
-  const [timer, setTimer] = useState(45);
+  const [timer, setTimer] = useState(DEFAULT_SETTINGS.votingDuration);
   const [running, setRunning] = useState(false);
   const [votes, setVotes] = useState<AudienceVote[]>([]);
   const [judges, setJudges] = useState<Judge[]>([]);

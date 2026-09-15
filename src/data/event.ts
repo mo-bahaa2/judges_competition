@@ -48,7 +48,7 @@ export const DEFAULT_SETTINGS: EventSettings = {
   eventNameAr: 'بطولة صنّاع الفكر',
   venue: 'Main Hall — Stage A',
   round: 'Grand Final · Round 03',
-  votingDuration: 60,
+  votingDuration: 120,
   judgesWeight: 60,
   audienceWeight: 40,
   postVotingHeadline: 'Voting is closed. The show continues.',
