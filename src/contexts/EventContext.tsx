@@ -397,7 +397,11 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
   );
 
   const publishWinner = useCallback(() => {
-    fetch(`${API_URL}/api/admin/results/reveal`, { method: 'POST', headers: ADMIN_HEADERS }).catch(console.error);
+    fetch(`${API_URL}/api/admin/results/reveal`, { 
+      method: 'POST', 
+      headers: ADMIN_HEADERS,
+      body: JSON.stringify({ acknowledgeTies: true })
+    }).catch(console.error);
     setRunning(false);
     setState('winner_published');
   }, []);
