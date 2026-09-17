@@ -187,7 +187,7 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
     } else if (state === 'not_started') {
       newMode = 'branding';
     } else if (state === 'voting_live' || state === 'ending_soon') {
-      newMode = 'voting_live';
+      newMode = 'combined';
     } else if (state === 'voting_closed') {
       newMode = 'final_ready';
     }
