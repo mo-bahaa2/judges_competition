@@ -361,7 +361,11 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
     return fetch(`${API_URL}/api/judge-votes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ judgeId, ranking })
+      body: JSON.stringify({ 
+        judgeId, 
+        ranking, 
+        judgeToken: '2a5e859edaddc3bd9ee0f7d94c2c246ab252c4c532d9259d3117336af42aa402' 
+      })
     }).then(res => {
       if (res.ok) {
         setHasVoted(true);
