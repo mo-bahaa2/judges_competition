@@ -94,6 +94,7 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
   const [simulate, setSimulate] = useState(true);
   const [lastMover, setLastMover] = useState<string | null>(null);
   const prevOrder = useRef<string>('');
+  const isTimerMaster = useRef<boolean>(false);
 
   // API Integration: Fetch Teams
   useEffect(() => {
@@ -212,6 +213,10 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
       if (event.data?.type === 'SYNC_DISPLAY') {
         setDisplay(event.data.payload);
       }
+      if (event.data?.type === 'SYNC_TIMER') {
+        setTimer(event.data.payload.timer);
+        setRunning(event.data.payload.running);
+      }
     };
     
     const channel = new BroadcastChannel('display_sync');
@@ -224,9 +229,19 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
     };
   }, []);
 
+  // Broadcast timer updates
+  useEffect(() => {
+    if (!isTimerMaster.current) return;
+    const payload = { timer, running };
+    new BroadcastChannel('display_sync').postMessage({ type: 'SYNC_TIMER', payload });
+    if (typeof window !== 'undefined' && (window as any).__DISPLAY_WINDOW__) {
+      (window as any).__DISPLAY_WINDOW__.postMessage({ type: 'SYNC_TIMER', payload }, '*');
+    }
+  }, [timer, running]);
+
   /* countdown */
   useEffect(() => {
-    if (!running) return;
+    if (!running || !isTimerMaster.current) return;
     const id = window.setInterval(() => {
       setTimer((t) => {
         if (t <= 1) {
@@ -267,6 +282,7 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
   }, [results]);
 
   const startVoting = useCallback(() => {
+    isTimerMaster.current = true;
     fetch(`${API_URL}/api/admin/voting/open`, { method: 'POST', headers: ADMIN_HEADERS }).catch(console.error);
     setState('voting_live');
     setRunning(true);
@@ -274,22 +290,25 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
   }, [settings.votingDuration]);
 
   const pauseVoting = useCallback(() => {
+    isTimerMaster.current = true;
     fetch(`${API_URL}/api/admin/voting/close`, { method: 'POST', headers: ADMIN_HEADERS }).catch(console.error);
     setRunning(false);
   }, []);
 
   const stopVoting = useCallback(() => {
+    isTimerMaster.current = true;
     fetch(`${API_URL}/api/admin/voting/close`, { method: 'POST', headers: ADMIN_HEADERS }).catch(console.error);
     setRunning(false);
     setState('voting_closed');
   }, []);
 
-  const resetTimer = useCallback(
-    () => setTimer(settings.votingDuration),
-    [settings.votingDuration]
-  );
+  const resetTimer = useCallback(() => {
+    isTimerMaster.current = true;
+    setTimer(settings.votingDuration);
+  }, [settings.votingDuration]);
 
   const resetVoting = useCallback(() => {
+    isTimerMaster.current = true;
     setVotes([]);
     setTimer(settings.votingDuration);
     setRunning(false);
