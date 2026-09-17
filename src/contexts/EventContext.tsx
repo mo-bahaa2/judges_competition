@@ -60,7 +60,7 @@ interface EventContextValue {
   resetVoting: () => void;
   castVote: (ranking: string[], voterName?: string) => void;
   deleteVote: (id: string) => void;
-  castJudgeVote: (name: string, ranking: string[]) => void;
+  castJudgeVote: (name: string, ranking: string[]) => Promise<boolean>;
   deleteJudgeVote: (id: string) => void;
   setDisplayMode: (mode: DisplayMode) => void;
   setDisplayPower: (on: boolean) => void;
@@ -358,7 +358,7 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
       judgeId = `J-${Math.floor(2000 + Math.random() * 7999)}`;
     }
 
-    fetch(`${API_URL}/api/judge-votes`, {
+    return fetch(`${API_URL}/api/judge-votes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ judgeId, ranking })
@@ -370,7 +370,7 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
         }
         setJudges((js) => [
           {
-            id: `J-${Math.floor(2000 + Math.random() * 7999)}`,
+            id: judgeId,
             label: `Judge ${js.length + 1}`,
             name,
             ranking,
@@ -379,10 +379,15 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
           },
           ...js
         ]);
+        return true;
       } else {
         console.error("Failed to submit judge vote");
+        return false;
       }
-    }).catch(console.error);
+    }).catch(err => {
+      console.error(err);
+      return false;
+    });
   }, []);
 
   const deleteJudgeVote = useCallback(

@@ -54,17 +54,20 @@ export default function App() {
     return `Review your ranking`;
   }, [picks.length, teams.length]);
 
-  const submit = () => {
+  const submit = async () => {
     setSending(true);
-    window.setTimeout(() => {
-      castJudgeVote(judgeName, picks);
+    const success = await castJudgeVote(judgeName, picks);
+    setSending(false);
+    
+    if (success) {
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem('judge_name', judgeName);
       }
-      setSending(false);
       setStep('done');
       toast('Evaluation submitted', 'ok');
-    }, 700);
+    } else {
+      toast('Failed to submit evaluation. Please try again.', 'error');
+    }
   };
 
   let body: React.ReactNode = null;
