@@ -66,7 +66,7 @@ export default function App() {
       setStep('done');
       toast('Evaluation submitted', 'ok');
     } else {
-      toast('Failed to submit evaluation. Please try again.', 'error');
+      toast('Failed to submit evaluation. Please try again.', 'warn');
     }
   };
 
