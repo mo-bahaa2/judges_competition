@@ -1,21 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
 @import 'tailwindcss';
 
 @theme {
-  --color-brand: #F8C900;
-  --color-brand-dim: rgba(248, 201, 0, 0.15);
-  --color-brand-bright: #FFD633;
-  --color-bg-deep: #020203;
-  --color-bg-base: #050506;
-  --color-bg-elevated: #0a0a0c;
-  --color-surface: rgba(255, 255, 255, 0.03);
-  --color-surface-hover: rgba(255, 255, 255, 0.06);
-  --color-fg: #EDEDEF;
-  --color-fg-muted: #8A8F98;
-  --color-fg-subtle: rgba(255, 255, 255, 0.40);
-  --color-border-subtle: rgba(255, 255, 255, 0.06);
-  --color-border-hover: rgba(255, 255, 255, 0.12);
+  --color-brand: #D4AF37;
+  --color-brand-dim: rgba(212, 175, 55, 0.15);
+  --color-brand-bright: #E3C874;
+  --color-bg-deep: #0B0B0B;
+  --color-bg-base: #1E1208;
+  --color-bg-elevated: #3B2F1F;
+  --color-surface: rgba(59, 47, 31, 0.4);
+  --color-surface-hover: rgba(106, 79, 43, 0.2);
+  --color-fg: #f1f3e7;
+  --color-fg-muted: #EED8A7;
+  --color-fg-subtle: rgba(238, 216, 167, 0.50);
+  --color-border-subtle: rgba(106, 79, 43, 0.4);
+  --color-border-hover: rgba(199, 150, 58, 0.5);
 }
 
 html, body, #root {
@@ -24,14 +24,15 @@ html, body, #root {
   margin: 0;
   background-color: var(--color-bg-base);
   color: var(--color-fg);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Libre Baskerville', serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', system-ui, sans-serif;
-  letter-spacing: -0.02em;
+h1, h2, h3, h4, h5, h6, .num {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.03em;
+  font-weight: normal;
 }
 
 *:not(input):not(textarea):not(button):focus-visible {
@@ -41,45 +42,40 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* =========================================
-   CINEMATIC BACKGROUND SYSTEM
+   CINEMATIC BACKGROUND SYSTEM (MUSEUM)
    ========================================= */
 
 .tech-canvas {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  background: radial-gradient(ellipse at top, #0a0a0f 0%, #050506 50%, #020203 100%);
+  background: radial-gradient(circle at 50% 0%, #1E1208 0%, #0B0B0B 80%);
   overflow-x: hidden;
   z-index: 1;
 }
 
-/* Layer 1: Noise */
+/* Layer 1: Canvas/Paper Texture */
 .tech-canvas::before {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.015;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Layer 2: Grid Overlay */
+/* Layer 2: Vignette Shadow */
 .tech-canvas::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.02;
-  background-image: 
-    linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  box-shadow: inset 0 0 150px rgba(11,11,11, 0.9);
 }
 
-/* Layer 3: Animated Ambient Blobs */
+/* Layer 3: Warm Museum Spotlights */
 .ambient-blobs {
   position: fixed;
   inset: 0;
@@ -91,127 +87,135 @@ h1, h2, h3, h4, h5, h6 {
 .ambient-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(140px);
-  animation: float 10s ease-in-out infinite;
+  filter: blur(150px);
+  animation: breathe 12s ease-in-out infinite alternate;
 }
 
 .blob-primary {
-  top: -10%;
-  left: 20%;
+  top: -15%;
+  left: 10%;
   width: 800px;
   height: 800px;
   background: var(--color-brand);
-  opacity: 0.08;
+  opacity: 0.04;
 }
 
 .blob-secondary {
   bottom: -20%;
   right: -10%;
-  width: 600px;
-  height: 600px;
-  background: #ffffff;
+  width: 900px;
+  height: 900px;
+  background: #C7963A;
   opacity: 0.03;
-  animation-delay: -5s;
+  animation-delay: -6s;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-40px) scale(1.05); }
+@keyframes breathe {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.02; }
+  100% { transform: scale(1.1) translate(20px, 30px); opacity: 0.05; }
 }
 
 /* =========================================
    COMPONENTS & UTILITIES
    ========================================= */
 
-/* Premium Glass Card */
+/* Premium Art Frame (Replacing Glass Panel) */
 .glass-panel {
-  background: linear-gradient(180deg, var(--color-surface) 0%, rgba(255,255,255,0.01) 100%);
+  background: linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg-base) 100%);
   border: 1px solid var(--color-border-subtle);
-  border-radius: 16px;
+  border-radius: 4px; /* Classic sharp corners */
   box-shadow: 
-    0 4px 24px -1px rgba(0, 0, 0, 0.4),
-    0 0 1px 0 rgba(255,255,255,0.1) inset;
-  backdrop-filter: blur(12px);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    0 10px 30px -5px rgba(0, 0, 0, 0.8),
+    0 0 2px 0 rgba(199,150,58,0.2) inset; /* Gold inner reflection */
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 2px;
+  pointer-events: none;
 }
 
 .glass-panel:hover {
   border-color: var(--color-border-hover);
   box-shadow: 
-    0 8px 32px -1px rgba(0, 0, 0, 0.5),
-    0 0 1px 0 rgba(255,255,255,0.2) inset,
-    0 0 40px -10px var(--color-brand-dim);
+    0 15px 40px -5px rgba(0, 0, 0, 0.9),
+    0 0 3px 0 rgba(199,150,58,0.4) inset,
+    0 0 50px -15px var(--color-brand-dim);
   transform: translateY(-2px);
 }
 
-/* Text Gradients */
+/* Text Gradients (Gold Foil Effect) */
 .text-gradient {
-  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.7) 100%);
+  background: linear-gradient(180deg, #f1f3e7 0%, #EED8A7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-brand {
-  background: linear-gradient(90deg, var(--color-brand) 0%, var(--color-brand-bright) 50%, var(--color-brand) 100%);
-  background-size: 200% auto;
+  background: linear-gradient(to bottom right, #EED8A7 0%, #D4AF37 40%, #C7963A 60%, #6A4F2B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shine 3s linear infinite;
-}
-
-@keyframes shine {
-  to { background-position: 200% center; }
+  position: relative;
 }
 
 /* Premium Button */
 .btn-premium {
   position: relative;
-  background: var(--color-brand);
-  color: #000;
-  font-weight: 700;
-  border-radius: 8px;
-  border: none;
+  background: linear-gradient(to bottom, #D4AF37 0%, #C7963A 100%);
+  color: #0B0B0B;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+  font-size: 1.1em;
+  border-radius: 2px;
+  border: 1px solid #E3C874;
   overflow: hidden;
   box-shadow: 
-    0 0 0 1px rgba(248, 201, 0, 0.5),
-    0 4px 12px rgba(248, 201, 0, 0.3),
+    0 4px 15px rgba(0, 0, 0, 0.6),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-transform: uppercase;
 }
 
 .btn-premium:hover {
-  background: var(--color-brand-bright);
+  background: linear-gradient(to bottom, #E3C874 0%, #D4AF37 100%);
   box-shadow: 
-    0 0 0 1px rgba(248, 201, 0, 0.6),
-    0 8px 20px rgba(248, 201, 0, 0.4),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+    0 6px 20px rgba(199, 150, 58, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
   transform: translateY(-1px);
 }
 
 .btn-premium:active {
   transform: scale(0.98);
-  box-shadow: 0 2px 4px rgba(248, 201, 0, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 .btn-ghost {
   background: transparent;
-  color: var(--color-fg-muted);
-  font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  color: var(--color-brand);
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+  font-size: 1.1em;
+  border-radius: 2px;
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-transform: uppercase;
 }
 
 .btn-ghost:hover {
-  background: var(--color-surface);
-  color: var(--color-fg);
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--color-brand-bright);
 }
 
 /* Animations */
