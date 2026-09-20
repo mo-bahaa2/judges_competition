@@ -168,20 +168,6 @@ export function VotingClosed({
         </div>
       </div>
 
-      <div className="mt-4 rounded-lg border border-line bg-ink-950 p-5">
-        <TechLabel>Presented with</TechLabel>
-        <div className="mt-3 grid grid-cols-2 gap-2">
-          {sponsors.map((s) =>
-          <div
-            key={s}
-            className="grid h-14 place-items-center rounded-sm border border-line bg-ink-900 px-2 text-center text-[11px] font-extrabold tracking-tech text-fg-muted">
-            
-              {s}
-            </div>
-          )}
-        </div>
-      </div>
-
       <a
         href="#"
         className="mt-4 flex items-center justify-center gap-2 rounded-sm border border-line bg-ink-900 py-3 text-sm font-bold text-fg-soft transition-colors duration-150 hover:border-brand/50 hover:text-brand">
