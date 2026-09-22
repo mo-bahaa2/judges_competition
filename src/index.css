@@ -3,19 +3,23 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-brand: #D4AF37;
-  --color-brand-dim: rgba(212, 175, 55, 0.15);
-  --color-brand-bright: #E3C874;
-  --color-bg-deep: #0B0B0B;
-  --color-bg-base: #1E1208;
-  --color-bg-elevated: #3B2F1F;
-  --color-surface: rgba(59, 47, 31, 0.4);
-  --color-surface-hover: rgba(106, 79, 43, 0.2);
-  --color-fg: #f1f3e7;
-  --color-fg-muted: #EED8A7;
-  --color-fg-subtle: rgba(238, 216, 167, 0.50);
-  --color-border-subtle: rgba(106, 79, 43, 0.4);
-  --color-border-hover: rgba(199, 150, 58, 0.5);
+  --color-brand: #D4AF37;          /* Bright Gold */
+  --color-brand-dim: rgba(212, 175, 55, 0.25);
+  --color-brand-bright: #E3C874;   /* Soft Champagne */
+  
+  --color-bg-deep: #0B0B0B;        /* Deep Black */
+  --color-bg-base: #0B0B0B;        /* Deep Black */
+  --color-bg-elevated: #1E1208;    /* Charcoal Brown */
+  
+  --color-surface: #3B2F1F;        /* Dark Brown */
+  --color-surface-hover: #6A4F2B;  /* Bronze */
+  
+  --color-fg: #f1f3e7;             /* Cream */
+  --color-fg-muted: #EED8A7;       /* Gold Light */
+  --color-fg-subtle: #C9A24D;      /* Warm Golden Brown */
+  
+  --color-border-subtle: #3B2F1F;  /* Dark Brown */
+  --color-border-hover: #6A4F2B;   /* Bronze */
 }
 
 html, body, #root {
@@ -24,15 +28,16 @@ html, body, #root {
   margin: 0;
   background-color: var(--color-bg-base);
   color: var(--color-fg);
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Bebas Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  letter-spacing: 0.03em;
 }
 
-h1, h2, h3, h4, h5, h6, .num {
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 0.03em;
-  font-weight: normal;
+/* Secondary font for specific readable text elements */
+p, .text-secondary {
+  font-family: 'Libre Baskerville', serif;
+  letter-spacing: normal;
 }
 
 *:not(input):not(textarea):not(button):focus-visible {
@@ -49,7 +54,9 @@ h1, h2, h3, h4, h5, h6, .num {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  background: radial-gradient(circle at 50% 0%, #1E1208 0%, #0B0B0B 80%);
+  /* Deep Black background with a golden radial glow in the center */
+  background: radial-gradient(circle at 50% 50%, rgba(201, 162, 77, 0.15) 0%, #1E1208 30%, #0B0B0B 70%);
+  background-color: #0B0B0B;
   overflow-x: hidden;
   z-index: 1;
 }
@@ -61,7 +68,7 @@ h1, h2, h3, h4, h5, h6, .num {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.08;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
@@ -72,47 +79,38 @@ h1, h2, h3, h4, h5, h6, .num {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  box-shadow: inset 0 0 150px rgba(11,11,11, 0.9);
+  box-shadow: inset 0 0 200px rgba(11,11,11, 0.95);
 }
 
-/* Layer 3: Warm Museum Spotlights */
+/* Layer 3: Warm Museum Spotlights (Optional slow motion glow) */
 .ambient-blobs {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ambient-blob {
   position: absolute;
   border-radius: 50%;
   filter: blur(150px);
-  animation: breathe 12s ease-in-out infinite alternate;
+  animation: breathe 8s ease-in-out infinite alternate;
 }
 
 .blob-primary {
-  top: -15%;
-  left: 10%;
-  width: 800px;
-  height: 800px;
-  background: var(--color-brand);
-  opacity: 0.04;
-}
-
-.blob-secondary {
-  bottom: -20%;
-  right: -10%;
-  width: 900px;
-  height: 900px;
-  background: #C7963A;
-  opacity: 0.03;
-  animation-delay: -6s;
+  width: 600px;
+  height: 600px;
+  background: #C9A24D;
+  opacity: 0.08;
 }
 
 @keyframes breathe {
-  0% { transform: scale(1) translate(0, 0); opacity: 0.02; }
-  100% { transform: scale(1.1) translate(20px, 30px); opacity: 0.05; }
+  0% { transform: scale(1); opacity: 0.05; }
+  100% { transform: scale(1.2); opacity: 0.12; }
 }
 
 /* =========================================
@@ -121,12 +119,12 @@ h1, h2, h3, h4, h5, h6, .num {
 
 /* Premium Art Frame (Replacing Glass Panel) */
 .glass-panel {
-  background: linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg-base) 100%);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: 4px; /* Classic sharp corners */
+  background: linear-gradient(135deg, rgba(30, 18, 8, 0.9) 0%, rgba(11, 11, 11, 0.95) 100%);
+  border: 1px solid var(--color-surface);
+  border-radius: 4px;
   box-shadow: 
-    0 10px 30px -5px rgba(0, 0, 0, 0.8),
-    0 0 2px 0 rgba(199,150,58,0.2) inset; /* Gold inner reflection */
+    0 10px 30px -5px rgba(0, 0, 0, 0.9),
+    0 0 2px 0 rgba(199,150,58,0.15) inset;
   position: relative;
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -135,16 +133,16 @@ h1, h2, h3, h4, h5, h6, .num {
   content: '';
   position: absolute;
   inset: 3px;
-  border: 1px solid rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.05);
   border-radius: 2px;
   pointer-events: none;
 }
 
 .glass-panel:hover {
-  border-color: var(--color-border-hover);
+  border-color: var(--color-surface-hover);
   box-shadow: 
-    0 15px 40px -5px rgba(0, 0, 0, 0.9),
-    0 0 3px 0 rgba(199,150,58,0.4) inset,
+    0 15px 40px -5px rgba(0, 0, 0, 1),
+    0 0 3px 0 rgba(199,150,58,0.3) inset,
     0 0 50px -15px var(--color-brand-dim);
   transform: translateY(-2px);
 }
