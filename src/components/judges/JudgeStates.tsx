@@ -117,14 +117,8 @@ export function VotingNotOpen({ starting }: {starting: boolean;}) {
       <p className="mt-2 text-base font-medium text-fg-muted">
         Keep this page open. Voting unlocks the moment the host opens the round.
       </p>
-      <div className="mt-8 flex w-full items-center gap-3 rounded-sm border border-brand/30 bg-brand/[0.07] px-4 py-3 text-left">
-        <span className="led-blink h-2.5 w-2.5 rounded-full bg-brand shadow-led" />
-        <span className="text-xs font-extrabold uppercase tracking-tech text-brand">
-          Standing by for host
-        </span>
-      </div>
-    </Frame>);
-
+    </Frame>
+  );
 }
 
 export function VotingClosed({
