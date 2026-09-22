@@ -69,7 +69,7 @@ export function VoteSubmitted({
   teams
 }: {ballot: string[];teams: Team[];}) {
   return (
-    <LampContainer>
+    <>
       <Frame icon={<AnimatedCheckIcon className="h-12 w-12 text-ink-950" strokeWidth={3} />}>
         <h1 className="mt-7 text-3xl font-extrabold uppercase leading-tight text-fg">
           Evaluation Submitted
@@ -83,7 +83,7 @@ export function VoteSubmitted({
           <TechLabel>CANNOT BE EDITED AFTER SUBMISSION</TechLabel>
         </div>
       </Frame>
-    </LampContainer>
+    </>
   );
 }
 
