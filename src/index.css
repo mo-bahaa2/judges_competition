@@ -3,6 +3,9 @@
 @import 'tailwindcss';
 
 @theme {
+  --font-sans: 'Bebas Neue', sans-serif;
+  --font-serif: 'Libre Baskerville', serif;
+
   --color-brand: #D4AF37;          /* Bright Gold */
   --color-brand-dim: rgba(212, 175, 55, 0.25);
   --color-brand-bright: #E3C874;   /* Soft Champagne */
@@ -28,7 +31,7 @@ html, body, #root {
   margin: 0;
   background-color: var(--color-bg-base);
   color: var(--color-fg);
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   letter-spacing: 0.03em;
@@ -36,7 +39,7 @@ html, body, #root {
 
 /* Secondary font for specific readable text elements */
 p, .text-secondary {
-  font-family: 'Libre Baskerville', serif;
+  font-family: var(--font-serif);
   letter-spacing: normal;
 }
 
@@ -54,32 +57,36 @@ p, .text-secondary {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  /* Deep Black background with a golden radial glow in the center */
-  background: radial-gradient(circle at 50% 50%, rgba(201, 162, 77, 0.15) 0%, #1E1208 30%, #0B0B0B 70%);
-  background-color: #0B0B0B;
+  background-color: var(--color-bg-deep);
   overflow-x: hidden;
   z-index: 1;
 }
 
-/* Layer 1: Canvas/Paper Texture */
+/* Animated Radiant Golden Glow in Center */
 .tech-canvas::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -20%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.25) 0%, rgba(30, 18, 8, 0.6) 40%, rgba(11, 11, 11, 1) 65%);
+  animation: pulse-glow 8s ease-in-out infinite alternate;
 }
 
-/* Layer 2: Vignette Shadow */
+@keyframes pulse-glow {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+
+/* Layer 1: Canvas/Paper Texture */
 .tech-canvas::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  box-shadow: inset 0 0 200px rgba(11,11,11, 0.95);
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 /* Layer 3: Warm Museum Spotlights (Optional slow motion glow) */
@@ -168,7 +175,7 @@ p, .text-secondary {
   position: relative;
   background: linear-gradient(to bottom, #D4AF37 0%, #C7963A 100%);
   color: #0B0B0B;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   letter-spacing: 0.05em;
   font-size: 1.1em;
   border-radius: 2px;
@@ -200,7 +207,7 @@ p, .text-secondary {
 .btn-ghost {
   background: transparent;
   color: var(--color-brand);
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: var(--font-sans);
   letter-spacing: 0.05em;
   font-size: 1.1em;
   border-radius: 2px;
