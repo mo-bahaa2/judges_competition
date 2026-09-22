@@ -42,53 +42,49 @@ function Frame({
 
 }
 
+import { LampContainer } from '../ui/LampContainer';
+
+const AnimatedCheckIcon = ({ className, strokeWidth }: { className: string, strokeWidth: number }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    stroke="currentColor"
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <motion.path
+      initial={{ pathLength: 0, opacity: 0 }}
+      animate={{ pathLength: 1, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+      d="M20 6L9 17L4 12"
+    />
+  </svg>
+);
+
 export function VoteSubmitted({
   ballot,
   teams
-
-
-
 }: {ballot: string[];teams: Team[];}) {
   return (
-    <Frame icon={<CheckIcon className="h-12 w-12" strokeWidth={3} />}>
-      <h1 className="mt-7 text-4xl font-extrabold leading-tight text-fg">
-        Vote Submitted!
-      </h1>
-      <p className="mt-2 text-base font-medium text-fg-muted">
-        Thank you for participating. Watch the stage screen for live results.
-      </p>
-      <ul className="mt-8 w-full space-y-2">
-        {ballot.map((id, i) => {
-          const team = teams.find((t) => t.id === id);
-          return (
-            <motion.li
-              key={id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.12 + i * 0.05,
-                duration: 0.25,
-                ease: [0.23, 1, 0.32, 1]
-              }}
-              className="flex items-center gap-3 rounded-sm border border-line bg-ink-900 px-4 py-3 text-left">
-              
-              <span className="num grid h-8 w-8 place-items-center rounded-full bg-brand text-xs font-extrabold text-ink-950">
-                {i + 1}
-              </span>
-              <span className="flex-1 truncate font-bold text-fg">
-                {team?.name}
-              </span>
-              <TechLabel>{RANK_WORD[i]} place</TechLabel>
-            </motion.li>);
-
-        })}
-      </ul>
-      <div className="mt-8 flex items-center gap-2 rounded-sm border border-line bg-ink-950 px-3 py-2">
-        <ShieldCheckIcon className="h-4 w-4 text-brand" strokeWidth={2} />
-        <TechLabel>Ballot locked · one vote per device</TechLabel>
-      </div>
-    </Frame>);
-
+    <LampContainer>
+      <Frame icon={<AnimatedCheckIcon className="h-12 w-12 text-ink-950" strokeWidth={3} />}>
+        <h1 className="mt-7 text-3xl font-extrabold uppercase leading-tight text-fg">
+          Evaluation Submitted
+        </h1>
+        <p className="mt-2 text-base font-medium text-fg-muted">
+          Your rankings are locked and sent to the control room.
+        </p>
+        
+        <div className="mt-8 flex w-full items-center gap-2 rounded-sm border border-line bg-ink-950 px-5 py-4 z-50">
+          <ShieldCheckIcon className="h-4 w-4 text-brand" strokeWidth={2} />
+          <TechLabel>CANNOT BE EDITED AFTER SUBMISSION</TechLabel>
+        </div>
+      </Frame>
+    </LampContainer>
+  );
 }
 
 export function AlreadyVoted() {
