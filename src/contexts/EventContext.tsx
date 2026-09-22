@@ -155,13 +155,13 @@ export function EventProvider({ children }: {children: React.ReactNode;}) {
                };
                return {
                  team: localTeam as Team,
-                 votes: t.audienceScore || 0,
+                 votes: t.audiencePoints || 0,
                  firsts: t.firstPlaceCount || 0,
-                 points: t.finalScore || 0,
-                 audiencePct: t.audienceScore || 0,
-                 judgeAvg: t.judgesScore || 0,
-                 judgesPct: t.judgesScore || 0,
-                 finalPct: t.finalScore || 0,
+                 points: t.finalPoints || 0,
+                 audiencePct: t.audiencePoints || 0,
+                 judgeAvg: t.judgePoints || 0,
+                 judgesPct: t.judgePoints || 0,
+                 finalPct: t.finalPoints || 0,
                  rank: t.rank || 0
                };
              });
