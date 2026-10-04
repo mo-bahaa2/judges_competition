@@ -33,7 +33,7 @@ export function LogoLockup({
   title,
   subtitle,
   className = ''
-}: LogoProps & {title?: string;subtitle?: string;}) {
+}: LogoProps & { title?: string; subtitle?: string; }) {
   const light = tone === 'black';
   return (
     <div className={`flex items-center gap-3 ${className}`}>
@@ -42,8 +42,7 @@ export function LogoLockup({
         <div className="leading-tight">
           {title && (
             <div
-              className={`font-bold tracking-tight ${
-              light ? 'text-ink-950' : 'text-fg'}`
+              className={`font-bold tracking-tight ${light ? 'text-ink-950' : 'text-fg'}`
               }
               style={{ fontSize: size * 0.42 }}>
               {title}
@@ -51,8 +50,7 @@ export function LogoLockup({
           )}
           {subtitle && (
             <div
-              className={`text-[11px] font-semibold uppercase tracking-widest ${
-              light ? 'text-ink-600' : 'text-fg-muted'}`
+              className={`text-[11px] font-semibold uppercase tracking-widest ${light ? 'text-ink-600' : 'text-fg-muted'}`
               }>
               {subtitle}
             </div>

@@ -44,17 +44,17 @@ export const TEAMS: Team[] = [
 
 
 export const DEFAULT_SETTINGS: EventSettings = {
-  eventName: 'MindMakers Championship',
-  eventNameAr: 'بطولة صنّاع الفكر',
-  venue: 'Main Hall — Stage A',
-  round: 'Grand Final · Round 03',
+  eventName: 'Museum Competition',
+  eventNameAr: '',
+  venue: '',
+  round: '',
   votingDuration: 600,
   judgesWeight: 60,
   audienceWeight: 40,
   postVotingHeadline: 'Voting is closed. The show continues.',
   postVotingBody:
   'Stay in the hall — the winner is announced live on the main stage screen in a few minutes.',
-  sponsors: ['NOVA ROBOTICS', 'HELIX CLOUD', 'QASR VENTURES', 'ATLAS LABS']
+  sponsors: []
 };
 
 // removed seedScores
